@@ -135,9 +135,12 @@ This application is designed to be easily deployed on **Streamlit Community Clou
 
 ---
 
-## 📈 Expected Results
-- **Validation Accuracy:** Consistently achieves **95–98%** accuracy on validation datasets using MobileNetV2.
+## 📈 Actual Results (V1 Model)
+- **Validation Accuracy:** The V1 Mask Detection model achieved an impressive **87.11%** accuracy on the validation dataset after just 17 epochs of training!
 - **Real-Time Performance:** Runs at **20–30 FPS** on a standard CPU, ensuring smooth live detection.
+
+### Training Curves
+![Mask Detection Training Curves](models/mask_training_curves.png)
 
 ---
 
