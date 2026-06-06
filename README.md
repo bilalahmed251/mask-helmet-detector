@@ -119,7 +119,7 @@ python realtime_detect.py --task mask
 ### 4. Web Application
 To launch the interactive Streamlit UI locally:
 ```bash
-streamlit run app/streamlit_app.py
+streamlit run streamlit_app.py
 ```
 
 ---
@@ -130,7 +130,7 @@ This application is designed to be easily deployed on **Streamlit Community Clou
 1. Push this repository to your GitHub account.
 2. Go to [Streamlit Community Cloud](https://share.streamlit.io/).
 3. Create a **New App** and select your repository (`bilalahmed251/mask-helmet-detector`).
-4. Set the Main file path to `app/streamlit_app.py`.
+4. Set the Main file path to `streamlit_app.py`.
 5. Click **Deploy!** 
 
 ---

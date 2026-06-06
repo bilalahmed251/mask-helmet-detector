@@ -16,8 +16,8 @@ import numpy as np
 from PIL import Image
 import io
 
-# Add parent directory to path so we can import utils
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Add current directory to path so we can import utils
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 
 import streamlit as st
