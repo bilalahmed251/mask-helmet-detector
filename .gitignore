@@ -57,6 +57,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+venv311/
 
 # Streamlit
 .streamlit/
@@ -66,7 +67,11 @@ venv.bak/
 
 # Datasets and Models
 dataset/
-models/
+images/
+annotations/
+models/*
+!models/*.h5
+!models/*.png
 
 # macOS
 .DS_Store
