@@ -3,6 +3,11 @@ app/streamlit_app.py
 ====================
 Beautiful Streamlit web application for
 Face Mask & Helmet Detection.
+
+Run:
+    streamlit run app/streamlit_app.py
+
+Author : Bilal Ahmed (231980028) — GIFT University
 """
 
 import os
