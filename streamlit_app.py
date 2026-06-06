@@ -3,7 +3,7 @@ app/streamlit_app.py
 ====================
 Beautiful Streamlit web application for
 Face Mask & Helmet Detection.
-
+"""
 
 import os
 import sys
