@@ -15,10 +15,12 @@ A complete end-to-end Deep Learning project for **Face Mask** and **Helmet Detec
 - [Datasets](#-datasets)
 - [Installation](#-installation)
 - [Usage](#-usage)
-  - [1. Training](#1-training)
-  - [2. Evaluation](#2-evaluation)
-  - [3. Real-Time Detection](#3-real-time-detection)
-  - [4. Web Application](#4-web-application)
+- [1. Training](#1-training)
+- [2. Evaluation](#2-evaluation)
+- [3. Real-Time Detection](#3-real-time-detection)
+- [4. Web Application](#4-web-application)
+- [5. Model Optimization (ONNX)](#5-model-optimization-onnx)
+- [6. Production API (FastAPI)](#6-production-api-fastapi)
 - [Deployment](#-deployment)
 - [Expected Results](#-expected-results)
 - [License](#-license)
@@ -30,6 +32,9 @@ A complete end-to-end Deep Learning project for **Face Mask** and **Helmet Detec
 - **Transfer Learning:** Utilizes the highly efficient **MobileNetV2** architecture optimized for real-time edge devices.
 - **Real-Time Inference:** Live detection through a webcam using OpenCV integration.
 - **Interactive UI:** A beautiful and responsive web application built with Streamlit.
+- **Production API:** A high-performance REST API built with FastAPI to serve predictions over HTTP JSON payloads.
+- **Model Optimization:** Conversion utility to export standard Keras `.h5` models to optimized `.onnx` graphs for 2-5x faster inference.
+- **Containerized Deployment:** Docker and Docker Compose configurations for secure, non-root, zero-configuration hosting.
 - **Scalable:** Modular code structure allowing easy extensions to new datasets.
 
 ---
@@ -39,8 +44,8 @@ A complete end-to-end Deep Learning project for **Face Mask** and **Helmet Detec
 ```text
 mask-helmet-detector/
 │
-├── app/                      # Web deployment application
-│   └── streamlit_app.py      # Streamlit UI script
+├── app/                      # Web and API service code
+│   └── api.py                # FastAPI backend REST API
 ├── dataset/                  # Datasets (Ignored in Git)
 ├── models/                   # Saved trained models (Ignored in Git)
 ├── notebooks/                # Jupyter Notebooks for EDA & prototyping
@@ -48,16 +53,22 @@ mask-helmet-detector/
 ├── utils/                    # Utility scripts
 │   ├── data_loader.py        # Dataset loading & augmentation
 │   ├── model_builder.py      # MobileNetV2 model architecture
+│   ├── export_onnx.py        # Model optimization script (Keras -> ONNX)
 │   └── visualizer.py         # Plotting & visualization utilities
 │
+├── Dockerfile                # Docker container blueprint
+├── docker-compose.yml        # Orchestration configuration
 ├── evaluate.py               # Model evaluation script
 ├── predict.py                # Single image prediction script
 ├── realtime_detect.py        # Live webcam detection script
 ├── requirements.txt          # Python dependencies
+├── streamlit_app.py          # Streamlit UI script
 ├── train.py                  # Main training script
 ├── .gitignore                # Ignored files & directories
 ├── LICENSE                   # MIT License
-└── README.md                 # Project documentation
+├── README.md                 # Project documentation
+├── portfolio_guide.txt       # Portfolio value explanation (plain text)
+└── project_files_guide.txt   # File-by-file walkthrough
 ```
 
 ---
@@ -122,16 +133,40 @@ To launch the interactive Streamlit UI locally:
 streamlit run streamlit_app.py
 ```
 
+### 5. Model Optimization (ONNX)
+To compile and optimize your Keras model to ONNX format (increases inference speed by 2-5x):
+```bash
+python utils/export_onnx.py --input models/mask_model.h5
+```
+
+### 6. Production API (FastAPI)
+To run the high-performance backend REST API service:
+```bash
+python -m uvicorn app.api:app --host 127.0.0.1 --port 8000 --reload
+```
+You can view and test the interactive API documentation (Swagger UI) at `http://127.0.0.1:8000/docs`.
+
 ---
 
 ## 🌐 Deployment
-This application is designed to be easily deployed on **Streamlit Community Cloud**.
 
+### 1. Streamlit Community Cloud
+This application is designed to be easily deployed on **Streamlit Community Cloud**.
 1. Push this repository to your GitHub account.
 2. Go to [Streamlit Community Cloud](https://share.streamlit.io/).
 3. Create a **New App** and select your repository (`bilalahmed251/mask-helmet-detector`).
 4. Set the Main file path to `streamlit_app.py`.
-5. Click **Deploy!** 
+5. Click **Deploy!**
+
+### 2. Docker Container Deployment (Production Server)
+You can deploy both the API and the Streamlit frontend to any container host (such as AWS ECS, Render, or a VPS) using Docker Compose:
+```bash
+# Build and start all services in containerized environment
+docker compose up --build
+```
+Once launched:
+- The FastAPI backend is exposed at `http://localhost:8000`
+- The Streamlit frontend is exposed at `http://localhost:8501` 
 
 ---
 
