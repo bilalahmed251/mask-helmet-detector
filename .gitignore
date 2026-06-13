@@ -71,6 +71,7 @@ images/
 annotations/
 models/*
 !models/*.h5
+!models/*.onnx
 !models/*.png
 
 # macOS

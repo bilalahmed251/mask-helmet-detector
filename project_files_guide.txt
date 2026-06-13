@@ -1,0 +1,113 @@
+SAFETY COMPLIANCE DETECTOR - PROJECT FILES EXPLANATION
+=====================================================
+
+This file provides a complete, file-by-file explanation of every folder and script in this project. Use this to understand how the codebase is organized and how the files work together.
+
+--------------------------------------------------------------
+I. DIRECTORY STRUCTURE OVERVIEW
+--------------------------------------------------------------
+
+mask-helmet-detector/
+│
+├── app/                       # Web & API service code
+│   └── api.py                 # FastAPI backend REST API
+│
+├── dataset/                   # Training & validation images (structured in subfolders)
+│
+├── models/                    # Saved models (.h5, .onnx) and training graphs
+│
+├── notebooks/                 # Prototype notebooks
+│   └── full_pipeline.ipynb    # Prototyping and EDA sandbox
+│
+├── utils/                     # Utility modules for data and model operations
+│   ├── __init__.py            # Python package initialization
+│   ├── data_loader.py         # Data pipeline, augmentation, preprocessing
+│   ├── model_builder.py       # MobileNetV2 graph definition and callbacks
+│   ├── export_onnx.py         # Model optimization script (Keras -> ONNX)
+│   └── visualizer.py          # Graphs, curves, and confusion matrices
+│
+├── Dockerfile                 # Docker container assembly blueprint
+├── docker-compose.yml         # Container coordinator (links API + Frontend)
+├── evaluate.py                # Command Line evaluation script
+├── predict.py                 # Single image Command Line predictor
+├── realtime_detect.py         # Live webcam/video window inference script
+├── streamlit_app.py           # Streamlit web dashboard user interface
+├── train.py                   # Main training orchestrator script
+├── requirements.txt           # List of all Python package dependencies
+├── LICENSE                    # MIT Open-Source license details
+├── README.md                  # Main project landing page documentation
+├── portfolio_guide.txt        # Explanation of portfolio value (plain text)
+└── project_files_guide.txt    # This file (explaining all files)
+
+--------------------------------------------------------------
+II. DETAILED FILE EXPLANATIONS
+--------------------------------------------------------------
+
+--- CORE APPLICATION SCRIPTS (ROOT) ---
+
+1. train.py
+   - Purpose: The main script used to train the machine learning models.
+   - How it works: Loads the datasets using standard augmentation, builds the MobileNetV2 architecture, performs initial training (transfer learning), optionally fine-tunes top layers, and saves the final weights (.h5 file) into the 'models/' folder.
+   - Command: python train.py --task mask --epochs 20
+
+2. evaluate.py
+   - Purpose: Evaluates a trained model's performance on validation data.
+   - How it works: Loads the saved model, runs predictions on the validation split, and prints metrics such as accuracy, precision, recall, and F1-score.
+
+3. predict.py
+   - Purpose: Run a simple prediction on a single static image from the terminal.
+   - How it works: Takes an image path, loads the selected model, pre-processes the image, prints the predicted class, and displays the prediction confidence score.
+   - Command: python predict.py --task mask --image path/to/photo.jpg
+
+4. realtime_detect.py
+   - Purpose: Runs live inference using your webcam or a video file.
+   - How it works: Uses OpenCV to capture frames. For mask detection, it runs a Haar Cascade face detector to crop faces, passes each face to the classification model, and overlays bounding boxes ("WITH MASK" / "NO MASK") on the live feed in a desktop window.
+
+5. streamlit_app.py
+   - Purpose: The interactive web user interface.
+   - How it works: Provides a clean web page built with Streamlit. Users can upload images via their browser, choose the classification task (Mask or Helmet), and view formatted compliance results, confidence metrics, and warning boxes.
+
+--- NEW PRODUCTION & MLOPS CONFIGURATIONS ---
+
+6. app/api.py
+   - Purpose: The FastAPI backend REST API.
+   - How it works: Exposes HTTP endpoints. The '/predict' endpoint accepts multipart file uploads (images), handles resizing and normalization, feeds the image into the model, and returns a structured JSON response (e.g. status, compliant or violation, confidence).
+
+7. Dockerfile
+   - Purpose: Code containerization.
+   - How it works: Instructs Docker to build an operating system image containing Python 3.11, installs critical OS libraries required by OpenCV (like libgl1), copies the codebase, installs pip requirements, and runs the application safely as a restricted system user.
+
+8. docker-compose.yml
+   - Purpose: Orchestrates multi-container setups.
+   - How it works: Links the frontend service and the backend API service together. Running 'docker compose up' boots up the API container on port 8000 and the Streamlit frontend container on port 8501 simultaneously.
+
+9. utils/export_onnx.py
+   - Purpose: Model optimization.
+   - How it works: Converts TensorFlow/Keras '.h5' files into '.onnx' format. It compiles the model, runs numerical consistency tests on random arrays using ONNX Runtime vs TensorFlow, and verifies accuracy matching.
+
+--- UTILITY SCRIPTS (utils/) ---
+
+10. utils/data_loader.py
+    - Purpose: Data pipeline helper.
+    - How it works: Contains configuration paths for datasets, functions to perform image data augmentation (zooms, shifts, horizontal flips) for training, and image preprocessing functions (normalization for MobileNetV2).
+
+11. utils/model_builder.py
+    - Purpose: Machine Learning model architecture.
+    - How it works: Loads the MobileNetV2 base model (pretrained on ImageNet), freezes the base weights, appends custom dense layers and a dropout layer, compiles with binary cross-entropy loss, and defines training callbacks (like EarlyStopping).
+
+12. utils/visualizer.py
+    - Purpose: Data plotting utilities.
+    - How it works: Contains code to plot training loss/accuracy curves, draw confusion matrices, and generate dataset distribution graphs.
+
+--- SUPPORTING CONFIGURATIONS ---
+
+13. requirements.txt
+    - Purpose: Package manager list.
+    - How it works: Lists all Python libraries needed to run the project. Now updated with FastAPI, Uvicorn, Python-Multipart, ONNX, and tf2onnx for production serving.
+
+14. README.md & LICENSE
+    - Purpose: Standard project repository documentation.
+    - How it works: The README.md gives an overview, installation commands, and training guides. The LICENSE details that this codebase is open-source under the MIT license.
+
+15. portfolio_guide.txt / portfolio_guide.md
+    - Purpose: Explains how this project makes your engineering portfolio look professional.
